@@ -53,21 +53,21 @@ def get_font(size):
     return pygame.font.SysFont("arial", size)
 
 
-FPS             = 120
+FPS             = 240
 
 WIDTH, HEIGHT   = 600, 700
 
-ROWS = COLS     = 40    #increase to have smaller pixels
+ROWS = COLS     = 2   #increase to have smaller pixels
 
 TOOLBAR_HEIGHT  = HEIGHT - WIDTH
 
-RIGHT_TOOLBAR_WIDTH = 75
+RIGHT_TOOLBAR_WIDTH = 100
 
 PIXEL_SIZE      = WIDTH // COLS
 
 BG_COLOR        = WHITE
 
-DRAW_GRID_LINES = True
+DRAW_GRID_LINES = False
 
 MOUSE_POSITION_TEXT_SIZE = 12
 

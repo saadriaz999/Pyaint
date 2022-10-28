@@ -30,7 +30,13 @@ class Button:
             pygame.draw.ellipse(win, self.color, (self.x, self.y, self.width, self.height)) #fill
             # pygame.draw.ellipse(win, BLACK, (self.x, self.y, self.width, self.height), 2) #border
 
-        
+        # TODO: START
+        elif self.shape == "left_arrow":
+            pygame.draw.polygon(win, self.color,
+                                ((self.x, self.y + self.width),
+                                 (self.x + (self.height/2), self.y),
+                                 (self.x + self.width, self.y + self.height)))
+        # TODO: END
 
         if self.text:
             button_font = get_font(int(self.width/2) - 6)
