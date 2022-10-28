@@ -13,9 +13,10 @@ GRID_STACK = GridStack(ROWS, COLS, BG_COLOR)
 # creating an object to access helper functions
 HF = HelperFunctions()
 
-# setting starting state and color
+# setting starting state, color, and paint brush size
 STATE = "COLOR"
 drawing_color = BLACK
+BRUSH_SIZE = 1
 
 run = True
 clock = pygame.time.Clock()
@@ -29,19 +30,19 @@ grid = GRID_STACK.grid_stack[CURRENT_LAYER]
 # Adding Buttons
 buttons = []
 
-BRUSH_WIDTHS = [
-    Button(RIGHT_TOOLBAR_CENTER - SIZE_SMALL / 2, 480, SIZE_SMALL, SIZE_SMALL, drawing_color, None, "ellipse"),
-    Button(RIGHT_TOOLBAR_CENTER - SIZE_MEDIUM / 2, 510, SIZE_MEDIUM, SIZE_MEDIUM, drawing_color, None, "ellipse"),
-    Button(RIGHT_TOOLBAR_CENTER - SIZE_LARGE / 2, 550, SIZE_LARGE, SIZE_LARGE, drawing_color, None, "ellipse")
-]
+# BRUSH_WIDTHS = [
+#     Button(RIGHT_TOOLBAR_CENTER - SIZE_SMALL / 2, 480, SIZE_SMALL, SIZE_SMALL, drawing_color, None, "ellipse"),
+#     Button(RIGHT_TOOLBAR_CENTER - SIZE_MEDIUM / 2, 510, SIZE_MEDIUM, SIZE_MEDIUM, drawing_color, None, "ellipse"),
+#     Button(RIGHT_TOOLBAR_CENTER - SIZE_LARGE / 2, 550, SIZE_LARGE, SIZE_LARGE, drawing_color, None, "ellipse")
+# ]
 
 # adding brush width buttons
 small_brush_width_button = Button(RIGHT_TOOLBAR_CENTER - SIZE_SMALL / 2, 480, SIZE_SMALL, SIZE_SMALL,
-                                  drawing_color, None, "ellipse")
+                                  BLACK, None, shape="ellipse", name='small_width')
 medium_brush_width_button = Button(RIGHT_TOOLBAR_CENTER - SIZE_MEDIUM / 2, 510, SIZE_MEDIUM, SIZE_MEDIUM,
-                                   drawing_color, None, "ellipse")
+                                   drawing_color, None, shape="ellipse", name='medium_width')
 large_brush_width_button = Button(RIGHT_TOOLBAR_CENTER - SIZE_LARGE / 2, 550, SIZE_LARGE, SIZE_LARGE,
-                                  drawing_color, None, "ellipse")
+                                  drawing_color, None, shape="ellipse", name='large_width')
 
 buttons.append(small_brush_width_button)
 buttons.append(medium_brush_width_button)
@@ -139,7 +140,7 @@ while run:
 
                     # paint individual cells
                     if STATE == "COLOR":
-                        HF.paint_using_brush(row, col, grid, drawing_color)
+                        HF.paint_using_brush(row, col, grid, drawing_color, BRUSH_SIZE)
 
                     # paint using bucket
                     elif STATE == "FILL":
@@ -283,32 +284,34 @@ while run:
                         GRID_STACK.swap_layers(SELECTED_LAYERS[0], SELECTED_LAYERS[1])
                         break
 
+                    # is small brush width was clicked
+                    if button.name == 'small_width':
+                        # set brush size to small and mode to color
+                        BRUSH_SIZE = 1
+                        STATE = "COLOR"
+                        break
+
+                    # is medium brush width was clicked
+                    elif button.name == 'medium_width':
+                        # set brush size to medium and mode to color
+                        BRUSH_SIZE = 2
+                        STATE = "COLOR"
+                        break
+
+                    # if large brush width was clicked
+                    elif button.name == 'large_width':
+                        # set the brush size to large and mode to color
+                        BRUSH_SIZE = 3
+                        STATE = "COLOR"
+                        break
+
                     # change the drawing color if any color button was clicked
                     drawing_color = button.color
                     draw_button.color = drawing_color
 
                     break
 
-                # loop through button
-                for button in BRUSH_WIDTHS:
-
-                    # do nothing if no brush width button was clicked
-                    if not button.clicked(pos):
-                        continue
-
-                    # set brush width
-                    if button.width == SIZE_SMALL:
-                        BRUSH_SIZE = 1
-                    elif button.width == SIZE_MEDIUM:
-                        BRUSH_SIZE = 2
-                    elif button.width == SIZE_LARGE:
-                        BRUSH_SIZE = 3
-
-                    # set the mode to color
-                    STATE = "COLOR"
-
     # draw changes on the canvas
-    HF.draw(WIN, buttons, arrow_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE,
-            drawing_color, RIGHT_TOOLBAR_CENTER, BRUSH_WIDTHS)
+    HF.draw(WIN, buttons, arrow_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, BRUSH_SIZE)
 
 pygame.quit()

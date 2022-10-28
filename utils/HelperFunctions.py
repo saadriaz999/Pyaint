@@ -1,5 +1,4 @@
-from Settings import *
-from Button import Button
+from utils.Settings import *
 
 
 class HelperFunctions:
@@ -36,7 +35,7 @@ class HelperFunctions:
                 pygame.draw.line(win, SILVER, (i * PIXEL_SIZE, 0), (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
 
     @classmethod
-    def draw_mouse_position_text(cls, win, buttons, brush_widths, size_small, size_medium, size_large):
+    def draw_mouse_position_text(cls, win, buttons):
         pos = pygame.mouse.get_pos()
         pos_font = get_font(MOUSE_POSITION_TEXT_SIZE)
         try:
@@ -47,6 +46,7 @@ class HelperFunctions:
             for button in buttons:
                 if not button.hover(pos):
                     continue
+
                 if button.text == "Clear":
                     text_surface = pos_font.render("Clear Everything", 1, BLACK)
                     win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
@@ -55,55 +55,48 @@ class HelperFunctions:
                     text_surface = pos_font.render("Erase", 1, BLACK)
                     win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
                     break
+
+                if button.name == 'small_width':
+                    text_surface = pos_font.render("Small-Sized Brush", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.name == 'medium_width':
+                    text_surface = pos_font.render("Medium-Sized Brush", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.name == 'large_width':
+                    text_surface = pos_font.render("Large-Sized Brush", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+
                 r, g, b = button.color
                 text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
 
                 win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
 
-            for button in brush_widths:
-                if not button.hover(pos):
-                    continue
-                if button.width == size_small:
-                    text_surface = pos_font.render("Small-Sized Brush", 1, BLACK)
-                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
-                    break
-                if button.width == size_medium:
-                    text_surface = pos_font.render("Medium-Sized Brush", 1, BLACK)
-                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
-                    break
-                if button.width == size_large:
-                    text_surface = pos_font.render("Large-Sized Brush", 1, BLACK)
-                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
-                    break
-
     @classmethod
-    def draw_brush_widths(cls, win, size_small, size_medium, size_large, drawing_color, rtb_x):
-        brush_widths = [
-            Button(rtb_x - size_small / 2, 480, size_small, size_small, drawing_color, None, None, "ellipse"),
-            Button(rtb_x - size_medium / 2, 510, size_medium, size_medium, drawing_color, None, None, "ellipse"),
-            Button(rtb_x - size_large / 2, 550, size_large, size_large, drawing_color, None, None, "ellipse")
-        ]
-        for button in brush_widths:
-            button.draw(win)
-            # Set border colour
-            if button.color == BLACK:
-                border_color = GRAY
-            else:
-                border_color = BLACK
-            # Set border width
-            if ((BRUSH_SIZE == 1 and button.width == size_small) or (
-                    BRUSH_SIZE == 2 and button.width == size_medium) or (
-                    BRUSH_SIZE == 3 and button.width == size_large)):
-                border_width = 4
-            else:
-                border_width = 2
-            # Draw border
-            pygame.draw.ellipse(win, border_color, (button.x, button.y, button.width, button.height),
-                                border_width)  # border
+    def draw_brush_widths(cls, win, size_small, size_medium, size_large, buttons, brush_size):
+        for button in buttons:
+            if button.name and button.name[-5:] == 'width':
+                # Set border colour
+                if button.color == BLACK:
+                    border_color = GRAY
+                else:
+                    border_color = BLACK
+                # Set border width
+                if ((brush_size == 1 and button.width == size_small) or (
+                        brush_size == 2 and button.width == size_medium) or (
+                        brush_size == 3 and button.width == size_large)):
+                    border_width = 4
+                else:
+                    border_width = 2
+                # Draw border
+                pygame.draw.ellipse(win, border_color, (button.x, button.y, button.width, button.height),
+                                    border_width)  # border
 
     @classmethod
     def draw(cls, win, buttons, arrow_button, current_layer, grid_stack, size_small, size_medium, size_large,
-             drawing_color, rtb_x, brush_widths):
+             brush_size):
 
         # this is a wrapper function that calls other functions
 
@@ -113,9 +106,8 @@ class HelperFunctions:
         for button in buttons:
             button.draw(win)
 
-        # draw_button.draw(win)
-        cls.draw_brush_widths(win, size_small, size_medium, size_large, drawing_color, rtb_x)
-        cls.draw_mouse_position_text(win, buttons, brush_widths, size_small, size_medium, size_large)
+        cls.draw_brush_widths(win, size_small, size_medium, size_large, buttons, brush_size)
+        cls.draw_mouse_position_text(win, buttons)
         pygame.display.update()
 
     @classmethod
@@ -131,15 +123,15 @@ class HelperFunctions:
         return row, col
 
     @classmethod
-    def paint_using_brush(cls, row, col, grid, drawing_color):
-        if BRUSH_SIZE == 1:
+    def paint_using_brush(cls, row, col, grid, drawing_color, brush_size):
+        if brush_size == 1:
             grid[row][col] = drawing_color
         else:  # for values greater than 1
-            r = row - BRUSH_SIZE + 1
-            c = col - BRUSH_SIZE + 1
+            r = row - brush_size + 1
+            c = col - brush_size + 1
 
-            for i in range(BRUSH_SIZE * 2 - 1):
-                for j in range(BRUSH_SIZE * 2 - 1):
+            for i in range(brush_size * 2 - 1):
+                for j in range(brush_size * 2 - 1):
                     if r + i < 0 or c + j < 0 or r + i >= ROWS or c + j >= COLS:
                         continue
                     grid[r + i][c + j] = drawing_color

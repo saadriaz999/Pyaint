@@ -51,7 +51,7 @@ FPS = 240
 
 WIDTH, HEIGHT = 600, 700
 
-ROWS = COLS = 2   # increase to have smaller pixels
+ROWS = COLS = 25   # increase to have smaller pixels
 
 TOOLBAR_HEIGHT = HEIGHT - WIDTH
 
@@ -64,8 +64,6 @@ BG_COLOR = WHITE
 DRAW_GRID_LINES = False
 
 MOUSE_POSITION_TEXT_SIZE = 12
-
-BRUSH_SIZE = 1  # can be 2, 3, 4 or any other value
 
 SMALL_BUTTON_HEIGHT = 14
 SMALL_BUTTON_WIDTH = 14
