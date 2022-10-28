@@ -1,4 +1,5 @@
-from utils import *
+from Settings import *
+from Button import Button
 
 
 class HelperFunctions:
@@ -14,17 +15,15 @@ class HelperFunctions:
         return grid
 
     @classmethod
-    def draw_grid(cls, win, grid):
-        # TODO: start
+    def draw_grid(cls, win, arrow_button, current_layer, grid_stack):
         # showing the arrow beside the current selected layer
-        arrow_button.y = 90 + CURRENT_LAYER * 50
+        arrow_button.y = 90 + current_layer * 50
 
         # displaying the current chosen layer
-        if CURRENT_LAYER == -1:
-            grid = GRID_STACK.show_merged_stack_view()
+        if current_layer == -1:
+            grid = grid_stack.show_merged_stack_view()
         else:
-            grid = GRID_STACK.grid_stack[CURRENT_LAYER]
-        # # TODO: end
+            grid = grid_stack.grid_stack[current_layer]
 
         for i, row in enumerate(grid):
             for j, pixel in enumerate(row):
@@ -37,7 +36,7 @@ class HelperFunctions:
                 pygame.draw.line(win, SILVER, (i * PIXEL_SIZE, 0), (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
 
     @classmethod
-    def draw_mouse_position_text(cls, win):
+    def draw_mouse_position_text(cls, win, buttons, brush_widths, size_small, size_medium, size_large):
         pos = pygame.mouse.get_pos()
         pos_font = get_font(MOUSE_POSITION_TEXT_SIZE)
         try:
@@ -78,7 +77,7 @@ class HelperFunctions:
                     break
 
     @classmethod
-    def draw_brush_widths(cls, win):
+    def draw_brush_widths(cls, win, size_small, size_medium, size_large, drawing_color, rtb_x):
         brush_widths = [
             Button(rtb_x - size_small / 2, 480, size_small, size_small, drawing_color, None, None, "ellipse"),
             Button(rtb_x - size_medium / 2, 510, size_medium, size_medium, drawing_color, None, None, "ellipse"),
@@ -87,13 +86,11 @@ class HelperFunctions:
         for button in brush_widths:
             button.draw(win)
             # Set border colour
-            border_color = BLACK
             if button.color == BLACK:
                 border_color = GRAY
             else:
                 border_color = BLACK
             # Set border width
-            border_width = 2
             if ((BRUSH_SIZE == 1 and button.width == size_small) or (
                     BRUSH_SIZE == 2 and button.width == size_medium) or (
                     BRUSH_SIZE == 3 and button.width == size_large)):
@@ -105,21 +102,25 @@ class HelperFunctions:
                                 border_width)  # border
 
     @classmethod
-    def draw(cls, win, grid, buttons):
+    def draw(cls, win, buttons, arrow_button, current_layer, grid_stack, size_small, size_medium, size_large,
+             drawing_color, rtb_x, brush_widths):
+
+        # this is a wrapper function that calls other functions
+
         win.fill(BG_COLOR)
-        cls.draw_grid(win, grid)
+        cls.draw_grid(win, arrow_button, current_layer, grid_stack)
 
         for button in buttons:
             button.draw(win)
 
         # draw_button.draw(win)
-        cls.draw_brush_widths(win)
-        cls.draw_mouse_position_text(win)
+        cls.draw_brush_widths(win, size_small, size_medium, size_large, drawing_color, rtb_x)
+        cls.draw_mouse_position_text(win, buttons, brush_widths, size_small, size_medium, size_large)
         pygame.display.update()
 
     @classmethod
-    def get_row_col_from_pos(cls, pos):
-        x, y = pos
+    def get_row_col_from_pos(cls, position):
+        x, y = position
         row = y // PIXEL_SIZE
         col = x // PIXEL_SIZE
 
@@ -130,7 +131,7 @@ class HelperFunctions:
         return row, col
 
     @classmethod
-    def paint_using_brush(cls, row, col, size):
+    def paint_using_brush(cls, row, col, grid, drawing_color):
         if BRUSH_SIZE == 1:
             grid[row][col] = drawing_color
         else:  # for values greater than 1
@@ -147,7 +148,7 @@ class HelperFunctions:
 
     @classmethod
     # Checks whether the coordinated are within the canvas
-    def inBounds(cls, row, col):
+    def check_in_bounds(cls, row, col):
         if row < 0 or col < 0:
             return 0
         if row >= ROWS or col >= COLS:
@@ -155,16 +156,13 @@ class HelperFunctions:
         return 1
 
     @classmethod
-    def fill_bucket(cls, row, col, color):
+    def fill_bucket(cls, row, col, color, grid):
 
         # Visiting array
-        vis = [[0 for i in range(101)] for j in range(101)]
+        vis = [[0 for _ in range(101)] for _ in range(101)]
 
         # Creating queue for bfs
-        obj = []
-
-        # Pushing pair of {x, y}
-        obj.append([row, col])
+        obj = [[row, col]]
 
         # Marking {x, y} as visited
         vis[row][col] = 1
@@ -184,21 +182,21 @@ class HelperFunctions:
             obj.pop(0)
 
             # For Upside Pixel or Cell
-            if cls.inBounds(x + 1, y) == 1 and vis[x + 1][y] == 0 and grid[x + 1][y] == preColor:
+            if cls.check_in_bounds(x + 1, y) == 1 and vis[x + 1][y] == 0 and grid[x + 1][y] == preColor:
                 obj.append([x + 1, y])
                 vis[x + 1][y] = 1
 
             # For Downside Pixel or Cell
-            if cls.inBounds(x - 1, y) == 1 and vis[x - 1][y] == 0 and grid[x - 1][y] == preColor:
+            if cls.check_in_bounds(x - 1, y) == 1 and vis[x - 1][y] == 0 and grid[x - 1][y] == preColor:
                 obj.append([x - 1, y])
                 vis[x - 1][y] = 1
 
             # For Right side Pixel or Cell
-            if cls.inBounds(x, y + 1) == 1 and vis[x][y + 1] == 0 and grid[x][y + 1] == preColor:
+            if cls.check_in_bounds(x, y + 1) == 1 and vis[x][y + 1] == 0 and grid[x][y + 1] == preColor:
                 obj.append([x, y + 1])
                 vis[x][y + 1] = 1
 
             # For Left side Pixel or Cell
-            if cls.inBounds(x, y - 1) == 1 and vis[x][y - 1] == 0 and grid[x][y - 1] == preColor:
+            if cls.check_in_bounds(x, y - 1) == 1 and vis[x][y - 1] == 0 and grid[x][y - 1] == preColor:
                 obj.append([x, y - 1])
                 vis[x][y - 1] = 1

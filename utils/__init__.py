@@ -1,5 +1,5 @@
-from .settings import *
-from .button import *
+from .Settings import *
+from .Button import *
 from .GridStack import *
 import pygame
 pygame.init()
