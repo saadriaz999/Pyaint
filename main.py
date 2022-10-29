@@ -28,7 +28,7 @@ clock = pygame.time.Clock()
 # initially keeping all layers not selected and first layer is viewed
 SELECTED_LAYERS = []
 CURRENT_LAYER = 0
-grid = GRID_STACK.grid_stack[CURRENT_LAYER]
+grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
 
 
 # run infinite loop
@@ -74,10 +74,28 @@ while run:
 
                     # if clear button was clicked
                     if button.text == "Clear":
-                        grid = HF.init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
                         BUTTON_BOARD.draw_button.color = drawing_color
+                        GRID_STACK = GridStack(ROWS, COLS, BG_COLOR)
+                        SELECTED_LAYERS = []
+                        CURRENT_LAYER = 0
+                        grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
                         STATE = "COLOR"
+
+                        # removing additional layer and checkbox buttons
+                        for i in range(1, GRID_STACK.get_max_num_layers()):
+                            # removing layer buttons
+                            if BUTTON_BOARD.layer_buttons[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons[i])
+
+                            # removing checkboxes
+                            if BUTTON_BOARD.layer_button_checkboxes[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes[i])
+
+                        # adjusting the add layer button checkbox for first layer
+                        BUTTON_BOARD.add_button.y = 130
+                        BUTTON_BOARD.layer_button_checkboxes[0].color = RED
+
                         break
 
                     # if fill bucket button was clicked
@@ -87,11 +105,11 @@ while run:
 
                     # if add layer button was clicked
                     if button.text == '+':
-                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_buttons[GRID_STACK.num_layers])
-                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_button_checkboxes[GRID_STACK.num_layers])
+                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_buttons[GRID_STACK.get_num_layers()])
+                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_button_checkboxes[GRID_STACK.get_num_layers()])
                         GRID_STACK.add_layer()
                         BUTTON_BOARD.add_button.y += 50
-                        if GRID_STACK.num_layers == 5:
+                        if GRID_STACK.get_num_layers() == 5:
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.add_button)
                         break
 
@@ -103,7 +121,7 @@ while run:
                     # if any of the layer button was clicked
                     if button.text and button.text[:5] == 'Layer':
                         CURRENT_LAYER = int(button.text[-1]) - 1
-                        grid = GRID_STACK.grid_stack[CURRENT_LAYER]
+                        grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
                         break
 
                     # if any of the checkbox button was clicked
@@ -119,23 +137,24 @@ while run:
 
                     # if the delete button was clicked
                     if button.text == 'Delete':
-                        if GRID_STACK.num_layers - len(SELECTED_LAYERS) < 1 or not SELECTED_LAYERS:
+                        if GRID_STACK.get_num_layers() - len(SELECTED_LAYERS) < 1 or not SELECTED_LAYERS:
                             break
 
                         # removing extra layer buttons and their checkmarks
                         for i in range(len(SELECTED_LAYERS)):
-                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons[GRID_STACK.num_layers - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes
-                                                        [GRID_STACK.num_layers - 1 - i])
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
 
-                        # delete layer from grid_stack object
+                        # delete layer from __grid_stack object
                         SELECTED_LAYERS.sort(reverse=True)
                         for layer in SELECTED_LAYERS:
                             GRID_STACK.delete_layer(layer)
 
                         # adding the add-layer button
                         if SELECTED_LAYERS:
-                            BUTTON_BOARD.add_button.y = 80 + 50 * GRID_STACK.num_layers
+                            BUTTON_BOARD.add_button.y = 80 + 50 * GRID_STACK.get_num_layers()
 
                         # unchecking all checkbox buttons
                         for check_button in BUTTON_BOARD.layer_button_checkboxes:
@@ -147,7 +166,7 @@ while run:
                         CURRENT_LAYER = -1
 
                         # adding the add button to button list if number of layers less than 5
-                        if GRID_STACK.num_layers < 5:
+                        if GRID_STACK.get_num_layers() < 5:
                             if BUTTON_BOARD.add_button not in BUTTON_BOARD.buttons:
                                 BUTTON_BOARD.buttons.append(BUTTON_BOARD.add_button)
 
@@ -155,14 +174,15 @@ while run:
 
                     # if the delete button was clicked
                     if button.text == 'Merge':
-                        if GRID_STACK.num_layers == 1 or not SELECTED_LAYERS:
+                        if GRID_STACK.get_num_layers() == 1 or not SELECTED_LAYERS:
                             break
 
                         # removing extra layer buttons and their checkmarks
                         for i in range(len(SELECTED_LAYERS) - 1):
-                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons[GRID_STACK.num_layers - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes
-                                                        [GRID_STACK.num_layers - 1 - i])
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
 
                         # merging all layers
                         top_layer = min(SELECTED_LAYERS)
@@ -176,7 +196,7 @@ while run:
 
                         # adding the add-layer button
                         if SELECTED_LAYERS:
-                            BUTTON_BOARD.add_button.y = 80 + 50 * GRID_STACK.num_layers
+                            BUTTON_BOARD.add_button.y = 80 + 50 * GRID_STACK.get_num_layers()
 
                         # unchecking all checkbox buttons
                         for check_button in BUTTON_BOARD.layer_button_checkboxes:
@@ -188,7 +208,7 @@ while run:
                         CURRENT_LAYER = -1
 
                         # adding the add button to button list if number of layers less than 5
-                        if GRID_STACK.num_layers < 5:
+                        if GRID_STACK.get_num_layers() < 5:
                             if BUTTON_BOARD.add_button not in BUTTON_BOARD.buttons:
                                 BUTTON_BOARD.buttons.append(BUTTON_BOARD.add_button)
 
@@ -202,6 +222,7 @@ while run:
 
                         # swap the layers
                         GRID_STACK.swap_layers(SELECTED_LAYERS[0], SELECTED_LAYERS[1])
+                        grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
                         break
 
                     # is small brush width was clicked
@@ -212,28 +233,29 @@ while run:
                         break
 
                     # is medium brush width was clicked
-                    elif button.name == 'medium_width':
+                    if button.name == 'medium_width':
                         # set brush size to medium and mode to color
                         BRUSH_SIZE = 2
                         STATE = "COLOR"
                         break
 
                     # if large brush width was clicked
-                    elif button.name == 'large_width':
+                    if button.name == 'large_width':
                         # set the brush size to large and mode to color
                         BRUSH_SIZE = 3
                         STATE = "COLOR"
                         break
 
                     # change the drawing color if any color button was clicked
-                    drawing_color = button.color
-                    BUTTON_BOARD.draw_button.color = drawing_color
-                    BUTTON_BOARD.drawing_color = drawing_color
+                    if button.name != 'show_selected':
+                        drawing_color = button.color
+                        BUTTON_BOARD.draw_button.color = drawing_color
+                        BUTTON_BOARD.drawing_color = drawing_color
 
-                    break
+                        break
 
     # draw changes on the canvas
-    HF.draw(WIN, BUTTON_BOARD.buttons, BUTTON_BOARD.arrow_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL,
+    HF.draw(WIN, BUTTON_BOARD.buttons, BUTTON_BOARD.show_selected_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL,
             SIZE_MEDIUM, SIZE_LARGE, BRUSH_SIZE)
 
 pygame.quit()

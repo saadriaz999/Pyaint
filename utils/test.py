@@ -55,8 +55,8 @@
 # buttons.append(draw_button)
 #
 # # arrow button to show which layer is currently viewing
-# arrow_button = Button(RIGHT_TOOLBAR_CENTER + 32, 40, 12, 24, BLACK, name='arrow', shape='left_arrow')
-# buttons.append(arrow_button)
+# show_selected_button = Button(RIGHT_TOOLBAR_CENTER + 32, 40, 12, 24, BLACK, name='arrow', shape='left_arrow')
+# buttons.append(show_selected_button)
 #
 # # button to view entire stack
 # view_button = Button(RIGHT_TOOLBAR_CENTER - 10, 30, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TEAL, 'View', BLACK)

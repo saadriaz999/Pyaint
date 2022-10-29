@@ -49,9 +49,10 @@ class ButtonBoard:
                                          LARGE_BUTTON_HEIGHT, name="FillBucket", image_url="assets/paint-bucket.png")
         self.buttons.append(self.fill_bucket_button)
 
-        # arrow button to show which layer is currently viewing
-        self.arrow_button = Button(RIGHT_TOOLBAR_CENTER + 32, 40, 12, 24, BLACK, name='arrow', shape='left_arrow')
-        self.buttons.append(self.arrow_button)
+        # button to show which layer is currently viewing
+        self.show_selected_button = Button(WIDTH, 25, RIGHT_TOOLBAR_WIDTH, LARGE_BUTTON_HEIGHT + 10, LIME,
+                                           name='show_selected')
+        self.buttons.append(self.show_selected_button)
 
         # button to view entire stack
         self.view_button = Button(RIGHT_TOOLBAR_CENTER - 10, 30, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TEAL, 'View',
@@ -60,14 +61,14 @@ class ButtonBoard:
 
         # buttons for individual layers
         self.layer_buttons = []
-        for i in range(self.grid_stack.MAX_LAYERS):
+        for i in range(self.grid_stack.get_max_num_layers()):
             self.layer_buttons.append(Button(RIGHT_TOOLBAR_CENTER - 10, 80 + 50 * i, LARGE_BUTTON_WIDTH,
                                              LARGE_BUTTON_HEIGHT, ORANGE, f'Layer{i + 1}', BLACK))
         self.buttons.append(self.layer_buttons[0])
 
         # buttons for selecting the layers
         self.layer_button_checkboxes = []
-        for i in range(self.grid_stack.MAX_LAYERS):
+        for i in range(self.grid_stack.get_max_num_layers()):
             self.layer_button_checkboxes.append(Button(RIGHT_TOOLBAR_CENTER - 30, 93 + 50 * i, SMALL_BUTTON_WIDTH,
                                                 SMALL_BUTTON_HEIGHT, RED, '', BLACK, name=f'Checkbox Layer {i + 1}'))
         self.buttons.append(self.layer_button_checkboxes[0])
