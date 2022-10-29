@@ -74,10 +74,28 @@ while run:
 
                     # if clear button was clicked
                     if button.text == "Clear":
-                        grid = HF.init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
                         BUTTON_BOARD.draw_button.color = drawing_color
+                        GRID_STACK = GridStack(ROWS, COLS, BG_COLOR)
+                        SELECTED_LAYERS = []
+                        CURRENT_LAYER = 0
+                        grid = GRID_STACK.grid_stack[CURRENT_LAYER]
                         STATE = "COLOR"
+
+                        # removing additional layer and checkbox buttons
+                        for i in range(1, GRID_STACK.MAX_LAYERS):
+                            # removing layer buttons
+                            if BUTTON_BOARD.layer_buttons[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons[i])
+
+                            # removing checkboxes
+                            if BUTTON_BOARD.layer_button_checkboxes[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes[i])
+
+                        # adjusting the add layer button checkbox for first layer
+                        BUTTON_BOARD.add_button.y = 130
+                        BUTTON_BOARD.layer_button_checkboxes[0].color = RED
+
                         break
 
                     # if fill bucket button was clicked
@@ -202,6 +220,7 @@ while run:
 
                         # swap the layers
                         GRID_STACK.swap_layers(SELECTED_LAYERS[0], SELECTED_LAYERS[1])
+                        grid = GRID_STACK.grid_stack[CURRENT_LAYER]
                         break
 
                     # is small brush width was clicked
@@ -212,28 +231,29 @@ while run:
                         break
 
                     # is medium brush width was clicked
-                    elif button.name == 'medium_width':
+                    if button.name == 'medium_width':
                         # set brush size to medium and mode to color
                         BRUSH_SIZE = 2
                         STATE = "COLOR"
                         break
 
                     # if large brush width was clicked
-                    elif button.name == 'large_width':
+                    if button.name == 'large_width':
                         # set the brush size to large and mode to color
                         BRUSH_SIZE = 3
                         STATE = "COLOR"
                         break
 
                     # change the drawing color if any color button was clicked
-                    drawing_color = button.color
-                    BUTTON_BOARD.draw_button.color = drawing_color
-                    BUTTON_BOARD.drawing_color = drawing_color
+                    if button.name != 'show_selected':
+                        drawing_color = button.color
+                        BUTTON_BOARD.draw_button.color = drawing_color
+                        BUTTON_BOARD.drawing_color = drawing_color
 
-                    break
+                        break
 
     # draw changes on the canvas
-    HF.draw(WIN, BUTTON_BOARD.buttons, BUTTON_BOARD.arrow_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL,
+    HF.draw(WIN, BUTTON_BOARD.buttons, BUTTON_BOARD.show_selected_button, CURRENT_LAYER, GRID_STACK, SIZE_SMALL,
             SIZE_MEDIUM, SIZE_LARGE, BRUSH_SIZE)
 
 pygame.quit()

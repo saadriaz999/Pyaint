@@ -16,7 +16,7 @@ class HelperFunctions:
     @classmethod
     def draw_grid(cls, win, arrow_button, current_layer, grid_stack):
         # showing the arrow beside the current selected layer
-        arrow_button.y = 90 + current_layer * 50
+        arrow_button.y = 75 + current_layer * 50
 
         # displaying the current chosen layer
         if current_layer == -1:
