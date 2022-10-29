@@ -13,9 +13,9 @@ class GridStack:
 
     Attributes
     ----------
-    grid_stack - list
+    __grid_stack - list
         the list holding many layers
-    num_layers - int
+    __num_layers - int
         the number of layers in the grid stack
     __rows = rows - int
         the number of row in every grid of the grid stack
@@ -38,17 +38,54 @@ class GridStack:
         Swap the two specified layers
     """
 
-    MAX_LAYERS = 5  # the maximum number of layers the grid stack can have at any time
-
     def __init__(self, rows, columns, background_color):
-        self.grid_stack = []
-        self.num_layers = 0
+        self.__grid_stack = []
+        self.__num_layers = 0
+        self.__max_layers = 5  # the maximum number of layers the grid stack can have at any time
         self.__rows = rows
         self.__columns = columns
         self.__bg_color = background_color
 
         # creating a layer in the grid stack
         self.add_layer()
+
+    def get_grid_stack_layer(self, layer):
+        """Returns the grid stack array
+
+        Parameter
+        ---------
+        layer - int
+            the index of the layer to return
+
+        Returns
+        -------
+        list
+            3-dimensional list representing the grid stack
+        """
+
+        return self.__grid_stack[layer]
+
+    def get_num_layers(self):
+        """Returns the number of layers currently in the grid stack
+
+        Returns
+        -------
+        int
+            the number of layers
+        """
+
+        return self.__num_layers
+
+    def get_max_num_layers(self):
+        """Returns the maximum number of layers possible in the grid stack
+
+        Returns
+        -------
+        int
+            the maximum number of layers
+        """
+
+        return self.__max_layers
 
     def init_grid(self):
         """Initialize a 2-dimensional grid representing one layer of the grid stack
@@ -71,10 +108,10 @@ class GridStack:
         grid = self.init_grid()
 
         # add initialized layer to stack
-        self.grid_stack.append(grid)
+        self.__grid_stack.append(grid)
 
         # increment the number of layers
-        self.num_layers += 1
+        self.__num_layers += 1
 
     def delete_layer(self, index):
         """Delete the specified layer from the grid stack
@@ -86,10 +123,10 @@ class GridStack:
         """
 
         # delete the layer
-        self.grid_stack.pop(index)
+        self.__grid_stack.pop(index)
 
         # decrementing the number of layers
-        self.num_layers -= 1
+        self.__num_layers -= 1
 
     def merge_layer(self, index_1, index_2):
         """Merge the two specified layers
@@ -114,8 +151,8 @@ class GridStack:
             index_2 = temp
 
         # using smaller names for the two layers to merge
-        layer_1 = self.grid_stack[index_1]
-        layer_2 = self.grid_stack[index_2]
+        layer_1 = self.__grid_stack[index_1]
+        layer_2 = self.__grid_stack[index_2]
 
         # looping over both layers
         for i in range(self.__rows):
@@ -143,9 +180,9 @@ class GridStack:
         """
 
         # swapping the positions of the layers in the grid stack
-        temp = self.grid_stack[index_1].copy()
-        self.grid_stack[index_1] = self.grid_stack[index_2].copy()
-        self.grid_stack[index_2] = temp
+        temp = self.__grid_stack[index_1].copy()
+        self.__grid_stack[index_1] = self.__grid_stack[index_2].copy()
+        self.__grid_stack[index_2] = temp
 
     def show_merged_stack_view(self):
         """Shows how the grid stack would look if viewed from above
@@ -157,14 +194,14 @@ class GridStack:
         """
 
         # making a copy of the top layer
-        stack_view = deepcopy(self.grid_stack[0])
+        stack_view = deepcopy(self.__grid_stack[0])
 
         # looping through all the cells in a grid:
         for i in range(self.__rows):
             for j in range(self.__columns):
 
                 # looping through the layers in the grid
-                for layer in self.grid_stack:
+                for layer in self.__grid_stack:
 
                     # adding cell to stack view if cell is not empty
                     if layer[i][j] != self.__bg_color:
