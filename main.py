@@ -51,17 +51,14 @@ while run:
             try:
                 row, col = HF.get_row_col_from_pos(pos)
 
-                # if user is not in view mode
-                if CURRENT_LAYER != -1:
+                # paint individual cells
+                if STATE == "COLOR":
+                    if CURRENT_LAYER not in INVISIBLE_LAYERS:
+                        HF.paint_using_brush(row, col, grid, drawing_color, BRUSH_SIZE)
 
-                    # paint individual cells
-                    if STATE == "COLOR":
-                        if CURRENT_LAYER not in INVISIBLE_LAYERS:
-                            HF.paint_using_brush(row, col, grid, drawing_color, BRUSH_SIZE)
-
-                    # paint using bucket
-                    elif STATE == "FILL":
-                        HF.fill_bucket(row, col, drawing_color, grid)
+                # paint using bucket
+                elif STATE == "FILL":
+                    HF.fill_bucket(row, col, drawing_color, grid)
 
             # exception thrown when user did not click on canvas
             except IndexError:
@@ -114,11 +111,6 @@ while run:
                         BUTTON_BOARD.add_button.y += 50
                         if GRID_STACK.get_num_layers() == 5:
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.add_button)
-                        break
-
-                    # if view button was clicked
-                    if button.text == 'View':
-                        CURRENT_LAYER = -1
                         break
 
                     # if any of the layer button was clicked
@@ -208,10 +200,9 @@ while run:
                         for check_button in BUTTON_BOARD.layer_button_checkboxes:
                             check_button.color = RED
 
-                        # unchecking all selected layers in from the backend and setting current layer
-                        # to view layer
+                        # unchecking all selected layers in from the backend
                         SELECTED_LAYERS = []
-                        CURRENT_LAYER = -1
+                        CURRENT_LAYER = top_layer
 
                         # adding the add button to button list if number of layers less than 5
                         if GRID_STACK.get_num_layers() < 5:
@@ -226,6 +217,7 @@ while run:
                             break
 
                         # removing extra layer buttons and their checkmarks
+                        top_layer = min(SELECTED_LAYERS)
                         for i in range(len(SELECTED_LAYERS) - 1):
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
@@ -254,10 +246,9 @@ while run:
                         for check_button in BUTTON_BOARD.layer_button_checkboxes:
                             check_button.color = RED
 
-                        # unchecking all selected layers in from the backend and setting current layer
-                        # to view layer
+                        # unchecking all selected layers in from the backend
                         SELECTED_LAYERS = []
-                        CURRENT_LAYER = -1
+                        CURRENT_LAYER = top_layer
 
                         # adding the add button to button list if number of layers less than 5
                         if GRID_STACK.get_num_layers() < 5:

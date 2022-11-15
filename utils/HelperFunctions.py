@@ -18,11 +18,7 @@ class HelperFunctions:
         # showing the arrow beside the current selected layer
         arrow_button.y = 75 + current_layer * 50
 
-        # displaying the current chosen layer
-        if current_layer == -1:
-            grid = grid_stack.show_merged_stack_view()
-        else:
-            grid = grid_stack.get_grid_stack_layer(current_layer)
+        grid = grid_stack.show_merged_stack_view()
 
         for i, row in enumerate(grid):
             for j, pixel in enumerate(row):
