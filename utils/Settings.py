@@ -85,9 +85,3 @@ SIZE_MEDIUM = 35
 SIZE_LARGE = 50
 
 RIGHT_TOOLBAR_CENTER = WIDTH + RIGHT_TOOLBAR_WIDTH / 2
-
-# todo
-# swap names as well (can sotre name attibute separtely)
-# always show view
-# implement visibility
-# show invisibilty by dimming orange color

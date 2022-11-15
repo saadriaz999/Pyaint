@@ -187,7 +187,7 @@ while run:
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_down_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
 
-                        # delete layer from __grid_stack object
+                        # delete layer from __visible_grid_stack object
                         SELECTED_LAYERS.sort(reverse=True)
                         for layer in SELECTED_LAYERS:
                             GRID_STACK.delete_layer(layer)
