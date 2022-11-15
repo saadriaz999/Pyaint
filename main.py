@@ -107,6 +107,8 @@ while run:
                     if button.text == '+':
                         BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_buttons[GRID_STACK.get_num_layers()])
                         BUTTON_BOARD.buttons.append(BUTTON_BOARD.layer_button_checkboxes[GRID_STACK.get_num_layers()])
+                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.move_up_buttons[GRID_STACK.get_num_layers()])
+                        BUTTON_BOARD.buttons.append(BUTTON_BOARD.move_down_buttons[GRID_STACK.get_num_layers()])
                         GRID_STACK.add_layer()
                         BUTTON_BOARD.add_button.y += 50
                         if GRID_STACK.get_num_layers() == 5:
@@ -135,6 +137,36 @@ while run:
                             BUTTON_BOARD.layer_button_checkboxes[layer_clicked].color = GREEN
                         break
 
+                    # if any of the move down button was clicked
+                    if button.name and button.name[:7] == 'Move Up':
+                        layer_clicked = int(button.name[-1]) - 1
+
+                        # do nothing if top layer was selected
+                        if layer_clicked == 0:
+                            pass
+
+                        # swap layer
+                        else:
+                            GRID_STACK.swap_layers(layer_clicked, layer_clicked-1)
+                            CURRENT_LAYER = layer_clicked - 1
+
+                        break
+
+                    # if any of the move down button was clicked
+                    if button.name and button.name[:9] == 'Move Down':
+                        layer_clicked = int(button.name[-1]) - 1
+
+                        # do nothing if bottm layer was selected
+                        if layer_clicked == GRID_STACK.get_num_layers() - 1:
+                            pass
+
+                        # swap layer
+                        else:
+                            GRID_STACK.swap_layers(layer_clicked, layer_clicked + 1)
+                            CURRENT_LAYER = layer_clicked + 1
+
+                        break
+
                     # if the delete button was clicked
                     if button.text == 'Delete':
                         if GRID_STACK.get_num_layers() - len(SELECTED_LAYERS) < 1 or not SELECTED_LAYERS:
@@ -145,6 +177,10 @@ while run:
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_up_buttons
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_down_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
 
                         # delete layer from __grid_stack object
@@ -182,6 +218,10 @@ while run:
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_up_buttons
+                                                        [GRID_STACK.get_num_layers() - 1 - i])
+                            BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_down_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
 
                         # merging all layers

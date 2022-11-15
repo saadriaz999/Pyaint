@@ -95,8 +95,8 @@ class HelperFunctions:
                                     border_width)  # border
 
     @classmethod
-    def draw(cls, win, buttons, arrow_button, current_layer, grid_stack, size_small, size_medium, size_large,
-             brush_size):
+    def draw(cls, win, buttons, arrow_button, current_layer, grid_stack, size_small, size_medium,
+             size_large, brush_size):
 
         # this is a wrapper function that calls other functions
 
