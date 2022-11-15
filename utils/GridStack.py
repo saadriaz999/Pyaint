@@ -39,12 +39,15 @@ class GridStack:
     """
 
     def __init__(self, rows, columns, background_color):
-        self.__grid_stack = []
         self.__num_layers = 0
         self.__max_layers = 5  # the maximum number of layers the grid stack can have at any time
         self.__rows = rows
         self.__columns = columns
         self.__bg_color = background_color
+
+        self.__grid_stack = []
+        self.__empty_grid = [[background_color] * columns for _ in range(rows)]
+        self.__visible_grid_stack = [self.__empty_grid for _ in range(self.__max_layers)]
 
         # creating a layer in the grid stack
         self.add_layer()
@@ -100,6 +103,20 @@ class GridStack:
         grid = [[self.__bg_color] * self.__columns for _ in range(self.__rows)]
 
         return grid
+
+    def toggle_layer_invisibility(self, index):
+        """Toggle the invisibility of the specified layer
+
+        Parameters
+        ----------
+        index - int
+            the index of the layer whose invisibility is to be toggled
+        """
+
+        # swap the layer in the grid stack and the visible grid stack
+        temp = self.__grid_stack[index]
+        self.__grid_stack[index] = self.__visible_grid_stack[index]
+        self.__visible_grid_stack[index] = temp
 
     def add_layer(self):
         """Add a layer to the end of the grid stack"""
@@ -180,8 +197,8 @@ class GridStack:
         """
 
         # swapping the positions of the layers in the grid stack
-        temp = self.__grid_stack[index_1].copy()
-        self.__grid_stack[index_1] = self.__grid_stack[index_2].copy()
+        temp = self.__grid_stack[index_1]
+        self.__grid_stack[index_1] = self.__grid_stack[index_2]
         self.__grid_stack[index_2] = temp
 
     def show_merged_stack_view(self):
