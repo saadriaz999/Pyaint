@@ -8,6 +8,7 @@ RED = (255, 0, 0)
 MAROON = (255, 0, 0)
 LIME = (0, 255, 0)
 BLUE = (0, 0, 255)
+SKY_BLUE = (146, 217, 244)
 NAVY = (0, 0, 128)
 GRAY = (128, 128, 128)
 SILVER = (192, 192, 192)
@@ -84,3 +85,9 @@ SIZE_MEDIUM = 35
 SIZE_LARGE = 50
 
 RIGHT_TOOLBAR_CENTER = WIDTH + RIGHT_TOOLBAR_WIDTH / 2
+
+# todo
+# swap names as well (can sotre name attibute separtely)
+# always show view
+# implement visibility
+# show invisibilty by dimming orange color

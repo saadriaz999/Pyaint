@@ -50,46 +50,73 @@ class ButtonBoard:
         self.buttons.append(self.fill_bucket_button)
 
         # button to show which layer is currently viewing
-        self.show_selected_button = Button(WIDTH, 25, RIGHT_TOOLBAR_WIDTH, LARGE_BUTTON_HEIGHT + 10, LIME,
+        self.show_selected_button = Button(WIDTH + 2, 25, RIGHT_TOOLBAR_WIDTH - 3, LARGE_BUTTON_HEIGHT + 10, LIME,
                                            name='show_selected')
         self.buttons.append(self.show_selected_button)
 
         # button to view entire stack
-        self.view_button = Button(RIGHT_TOOLBAR_CENTER - 10, 30, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TEAL, 'View',
-                                  BLACK)
+        self.view_button = Button(RIGHT_TOOLBAR_CENTER + 5, 30, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT,
+                                  TEAL, 'View', BLACK)
         self.buttons.append(self.view_button)
 
         # buttons for individual layers
         self.layer_buttons = []
         for i in range(self.grid_stack.get_max_num_layers()):
-            self.layer_buttons.append(Button(RIGHT_TOOLBAR_CENTER - 10, 80 + 50 * i, LARGE_BUTTON_WIDTH,
+            self.layer_buttons.append(Button(RIGHT_TOOLBAR_CENTER + 5, 80 + 50 * i, LARGE_BUTTON_WIDTH,
                                              LARGE_BUTTON_HEIGHT, ORANGE, f'Layer{i + 1}', BLACK))
         self.buttons.append(self.layer_buttons[0])
 
         # buttons for selecting the layers
         self.layer_button_checkboxes = []
         for i in range(self.grid_stack.get_max_num_layers()):
-            self.layer_button_checkboxes.append(Button(RIGHT_TOOLBAR_CENTER - 30, 93 + 50 * i, SMALL_BUTTON_WIDTH,
+            self.layer_button_checkboxes.append(Button(RIGHT_TOOLBAR_CENTER - 12, 93 + 50 * i, SMALL_BUTTON_WIDTH,
                                                 SMALL_BUTTON_HEIGHT, RED, '', BLACK, name=f'Checkbox Layer {i + 1}'))
         self.buttons.append(self.layer_button_checkboxes[0])
 
+        # buttons for moving layers up
+        self.move_up_buttons = []
+        for i in range(self.grid_stack.get_max_num_layers()):
+            self.move_up_buttons.append(Button(RIGHT_TOOLBAR_CENTER - 30, 96 + 50 * i, MEDIUM_BUTTON_WIDTH,
+                                        MEDIUM_BUTTON_HEIGHT, NAVY, shape='up_arrow', name=f'Move Up {i + 1}'))
+        self.buttons.append(self.move_up_buttons[0])
+
+        # buttons for moving layers down
+        self.move_down_buttons = []
+        for i in range(self.grid_stack.get_max_num_layers()):
+            self.move_down_buttons.append(Button(RIGHT_TOOLBAR_CENTER - 30, 103 + 50 * i, MEDIUM_BUTTON_WIDTH,
+                                          MEDIUM_BUTTON_HEIGHT, NAVY, shape='down_arrow',
+                                          name=f'Move Down {i + 1}'))
+        self.buttons.append(self.move_down_buttons[0])
+
+        # # cross buttons
+        # self.cross_buttons = []
+        # for i in range(self.grid_stack.get_max_num_layers()):
+        #     self.cross_buttons.append(Button(RIGHT_TOOLBAR_CENTER + 5, 80 + 50 * i, 0, 0, BLACK, shape='cross',
+        #                                      name=f'cross {i}'))
+        #     self.buttons.append(self.cross_buttons[i])
+
         # button for adding layers
-        self.add_button = Button(RIGHT_TOOLBAR_CENTER - 10, 130, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, FUCHSIA, '+',
+        self.add_button = Button(RIGHT_TOOLBAR_CENTER + 5, 130, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, FUCHSIA, '+',
                                  BLACK)
         self.buttons.append(self.add_button)
 
+        # buttons for toggling invisibility
+        self.toggle_invisibility_button = Button(RIGHT_TOOLBAR_CENTER - 37, 392, LARGE_BUTTON_WIDTH,
+                                                 LARGE_BUTTON_HEIGHT, GRAY, 'Visible', BLACK)
+        self.buttons.append(self.toggle_invisibility_button)
+
         # button for deleting layers
-        self.delete_button = Button(RIGHT_TOOLBAR_CENTER - 48, 350, MEDIUM_BUTTON_WIDTH, MEDIUM_BUTTON_HEIGHT, GRAY,
+        self.delete_button = Button(RIGHT_TOOLBAR_CENTER - 37, 350, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, GRAY,
                                     'Delete', BLACK)
         self.buttons.append(self.delete_button)
 
         # button for merging layers
-        self.merge_button = Button(RIGHT_TOOLBAR_CENTER - 16, 350, MEDIUM_BUTTON_WIDTH, MEDIUM_BUTTON_HEIGHT, GRAY,
+        self.merge_button = Button(RIGHT_TOOLBAR_CENTER + 5, 350, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, GRAY,
                                    'Merge', BLACK)
         self.buttons.append(self.merge_button)
 
         # button for swapping layers
-        self.swap_button = Button(RIGHT_TOOLBAR_CENTER + 16, 350, MEDIUM_BUTTON_WIDTH, MEDIUM_BUTTON_HEIGHT, GRAY,
+        self.swap_button = Button(RIGHT_TOOLBAR_CENTER + 5, 392, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, GRAY,
                                   'Swap', BLACK)
         self.buttons.append(self.swap_button)
 
