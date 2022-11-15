@@ -27,9 +27,9 @@ clock = pygame.time.Clock()
 
 # initially keeping all layers not selected and first layer is viewed
 SELECTED_LAYERS = []
+INVISIBLE_LAYERS = []
 CURRENT_LAYER = 0
 grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
-
 
 # run infinite loop
 while run:
@@ -56,7 +56,8 @@ while run:
 
                     # paint individual cells
                     if STATE == "COLOR":
-                        HF.paint_using_brush(row, col, grid, drawing_color, BRUSH_SIZE)
+                        if CURRENT_LAYER not in INVISIBLE_LAYERS:
+                            HF.paint_using_brush(row, col, grid, drawing_color, BRUSH_SIZE)
 
                     # paint using bucket
                     elif STATE == "FILL":
@@ -121,8 +122,8 @@ while run:
                         break
 
                     # if any of the layer button was clicked
-                    if button.text and button.text[:5] == 'Layer':
-                        CURRENT_LAYER = int(button.text[-1]) - 1
+                    if button.name and button.name[:5] == 'Layer':
+                        CURRENT_LAYER = int(button.name[-1]) - 1
                         grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
                         break
 
@@ -135,6 +136,7 @@ while run:
                         else:
                             SELECTED_LAYERS.append(layer_clicked)
                             BUTTON_BOARD.layer_button_checkboxes[layer_clicked].color = GREEN
+
                         break
 
                     # if any of the move down button was clicked
@@ -145,9 +147,14 @@ while run:
                         if layer_clicked == 0:
                             pass
 
-                        # swap layer
+                        # swap layer and button names
                         else:
-                            GRID_STACK.swap_layers(layer_clicked, layer_clicked-1)
+                            temp = BUTTON_BOARD.layer_buttons[layer_clicked].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons \
+                            [layer_clicked - 1].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked - 1].text = temp
+
+                            GRID_STACK.swap_layers(layer_clicked, layer_clicked - 1)
                             CURRENT_LAYER = layer_clicked - 1
 
                         break
@@ -156,12 +163,17 @@ while run:
                     if button.name and button.name[:9] == 'Move Down':
                         layer_clicked = int(button.name[-1]) - 1
 
-                        # do nothing if bottm layer was selected
+                        # do nothing if bottom layer was selected
                         if layer_clicked == GRID_STACK.get_num_layers() - 1:
                             pass
 
                         # swap layer
                         else:
+                            temp = BUTTON_BOARD.layer_buttons[layer_clicked].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons \
+                            [layer_clicked + 1].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked + 1].text = temp
+
                             GRID_STACK.swap_layers(layer_clicked, layer_clicked + 1)
                             CURRENT_LAYER = layer_clicked + 1
 
@@ -263,6 +275,26 @@ while run:
                         # swap the layers
                         GRID_STACK.swap_layers(SELECTED_LAYERS[0], SELECTED_LAYERS[1])
                         grid = GRID_STACK.get_grid_stack_layer(CURRENT_LAYER)
+                        break
+
+                    # if the toggle invisibility button was clicked
+                    if button.text == 'Visible':
+                        for layer in SELECTED_LAYERS:
+                            # toggle button color
+                            if BUTTON_BOARD.layer_buttons[layer].color == ORANGE:
+                                BUTTON_BOARD.layer_buttons[layer].color = LIGHT_ORANGE
+                            else:
+                                BUTTON_BOARD.layer_buttons[layer].color = ORANGE
+
+                            # toggle layer invisibility
+                            GRID_STACK.toggle_layer_invisibility(layer)
+
+                            # adding layer to invisible layers if needed
+                            if layer in INVISIBLE_LAYERS:
+                                INVISIBLE_LAYERS.remove(layer)
+                            else:
+                                INVISIBLE_LAYERS.append(layer)
+
                         break
 
                     # is small brush width was clicked

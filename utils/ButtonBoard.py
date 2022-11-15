@@ -63,7 +63,7 @@ class ButtonBoard:
         self.layer_buttons = []
         for i in range(self.grid_stack.get_max_num_layers()):
             self.layer_buttons.append(Button(RIGHT_TOOLBAR_CENTER + 5, 80 + 50 * i, LARGE_BUTTON_WIDTH,
-                                             LARGE_BUTTON_HEIGHT, ORANGE, f'Layer{i + 1}', BLACK))
+                                             LARGE_BUTTON_HEIGHT, ORANGE, f'{i + 1}', BLACK, name=f'Layer{i + 1}'))
         self.buttons.append(self.layer_buttons[0])
 
         # buttons for selecting the layers
@@ -87,13 +87,6 @@ class ButtonBoard:
                                           MEDIUM_BUTTON_HEIGHT, NAVY, shape='down_arrow',
                                           name=f'Move Down {i + 1}'))
         self.buttons.append(self.move_down_buttons[0])
-
-        # # cross buttons
-        # self.cross_buttons = []
-        # for i in range(self.grid_stack.get_max_num_layers()):
-        #     self.cross_buttons.append(Button(RIGHT_TOOLBAR_CENTER + 5, 80 + 50 * i, 0, 0, BLACK, shape='cross',
-        #                                      name=f'cross {i}'))
-        #     self.buttons.append(self.cross_buttons[i])
 
         # button for adding layers
         self.add_button = Button(RIGHT_TOOLBAR_CENTER + 5, 130, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, FUCHSIA, '+',

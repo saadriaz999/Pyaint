@@ -8,7 +8,6 @@ RED = (255, 0, 0)
 MAROON = (255, 0, 0)
 LIME = (0, 255, 0)
 BLUE = (0, 0, 255)
-SKY_BLUE = (146, 217, 244)
 NAVY = (0, 0, 128)
 GRAY = (128, 128, 128)
 SILVER = (192, 192, 192)
@@ -21,6 +20,7 @@ OLIVE = (128, 128, 0)
 TEAL = (0, 128, 128)
 GREEN = (0, 128, 0)
 FUCHSIA = (255, 0, 255)
+LIGHT_ORANGE = (255, 219, 176)
 
 COLORS = [
     WHITE,
