@@ -255,7 +255,7 @@ while run:
                             if BUTTON_BOARD.add_button not in BUTTON_BOARD.buttons:
                                 BUTTON_BOARD.buttons.append(BUTTON_BOARD.add_button)
 
-                        break 
+                        break
 
                     # if the swap button was clicked
                     if button.text == 'Swap':
