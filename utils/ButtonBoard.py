@@ -57,7 +57,6 @@ class ButtonBoard:
         # button to view entire stack
         self.view_button = Button(RIGHT_TOOLBAR_CENTER + 5, 30, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT,
                                   TEAL, 'View', BLACK)
-        self.buttons.append(self.view_button)
 
         # buttons for individual layers
         self.layer_buttons = []
