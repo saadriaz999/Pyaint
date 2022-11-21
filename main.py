@@ -142,8 +142,7 @@ while run:
                         # swap layer and button names
                         else:
                             temp = BUTTON_BOARD.layer_buttons[layer_clicked].text
-                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons \
-                            [layer_clicked - 1].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons[layer_clicked - 1].text
                             BUTTON_BOARD.layer_buttons[layer_clicked - 1].text = temp
 
                             GRID_STACK.swap_layers(layer_clicked, layer_clicked - 1)
@@ -162,8 +161,7 @@ while run:
                         # swap layer
                         else:
                             temp = BUTTON_BOARD.layer_buttons[layer_clicked].text
-                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons \
-                            [layer_clicked + 1].text
+                            BUTTON_BOARD.layer_buttons[layer_clicked].text = BUTTON_BOARD.layer_buttons[layer_clicked+1].text
                             BUTTON_BOARD.layer_buttons[layer_clicked + 1].text = temp
 
                             GRID_STACK.swap_layers(layer_clicked, layer_clicked + 1)
@@ -177,6 +175,7 @@ while run:
                             break
 
                         # removing extra layer buttons and their checkmarks
+                        top_layer = min(SELECTED_LAYERS)
                         for i in range(len(SELECTED_LAYERS)):
                             BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_buttons
                                                         [GRID_STACK.get_num_layers() - 1 - i])
