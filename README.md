@@ -1,6 +1,14 @@
-# Pyaint
-An open source paint program using Python and Pygame. Features will be added by the community as time goes on.
+## Pyaint
 
-You can go to the Wiki to get more details on this project.
+### Group 8 - Module: Layers
+### Section: 6675
 
-It is an effort to encourage students to do problem solving and learn to contribute to the Opensource community
+###Member Names:
+- Saad Riazuddin Mahmood - 22803
+- Danish Badar Qureshi - 22890
+- Khansa Junaid - 23074 
+- Muhammad Usman Adnan - 23012
+- Subata Naveen Khan - 18119
+
+###Github Link:
+###https://github.com/saadriaz999/Pyaint-Group8
