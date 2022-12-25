@@ -90,6 +90,14 @@ while run:
                             if BUTTON_BOARD.layer_button_checkboxes[i] in BUTTON_BOARD.buttons:
                                 BUTTON_BOARD.buttons.remove(BUTTON_BOARD.layer_button_checkboxes[i])
 
+                            # removing up buttons
+                            if BUTTON_BOARD.move_up_buttons[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_up_buttons[i])
+
+                            # removing down buttons
+                            if BUTTON_BOARD.move_down_buttons[i] in BUTTON_BOARD.buttons:
+                                BUTTON_BOARD.buttons.remove(BUTTON_BOARD.move_down_buttons[i])
+
                         # adjusting the add layer button checkbox for first layer
                         BUTTON_BOARD.add_button.y = 130
                         BUTTON_BOARD.layer_button_checkboxes[0].color = RED
