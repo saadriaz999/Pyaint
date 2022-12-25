@@ -64,11 +64,48 @@ class HelperFunctions:
                     text_surface = pos_font.render("Large-Sized Brush", 1, BLACK)
                     win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
                     break
+                if button.text == 'Delete':
+                    text_surface = pos_font.render("Delete Layer(s)", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.text == 'Merge':
+                    text_surface = pos_font.render("Merge Layer(s)", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.text == 'Visible':
+                    text_surface = pos_font.render("Toggle Visibility", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.text == 'Swap':
+                    text_surface = pos_font.render("Swap Layers", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.text == '+':
+                    text_surface = pos_font.render("Add Layer", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.name and button.name[:5] == 'Layer':
+                    text_surface = pos_font.render("Edit Layer", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.name and button.name[:8] == 'Checkbox':
+                    text_surface = pos_font.render("Select Layer", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
+                if button.name and button.name[:8] == 'Checkbox':
+                    text_surface = pos_font.render("Fill Bucket", 1, BLACK)
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    break
 
-                r, g, b = button.color
-                text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
+                if button.name and button.name == 'show_selected' or \
+                        button.name and button.name[:7] == 'Move Up' or \
+                        button.name and button.name[:9] == 'Move Down':
+                    pass
+                else:
+                    r, g, b = button.color
+                    text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
 
-                win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
+                    win.blit(text_surface, (10, HEIGHT - TOOLBAR_HEIGHT))
 
     @classmethod
     def draw_brush_widths(cls, win, size_small, size_medium, size_large, buttons, brush_size):

@@ -62,7 +62,7 @@ PIXEL_SIZE = WIDTH // COLS
 
 BG_COLOR = WHITE
 
-DRAW_GRID_LINES = False
+DRAW_GRID_LINES = True
 
 MOUSE_POSITION_TEXT_SIZE = 12
 
@@ -85,3 +85,7 @@ SIZE_MEDIUM = 35
 SIZE_LARGE = 50
 
 RIGHT_TOOLBAR_CENTER = WIDTH + RIGHT_TOOLBAR_WIDTH / 2
+
+#TODO
+# movev up and down button down clearing when pressing clear
+# when deleting and merging, current layer frontend and backend not working
